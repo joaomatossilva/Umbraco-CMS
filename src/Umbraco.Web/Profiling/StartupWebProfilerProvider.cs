@@ -19,7 +19,7 @@ namespace Umbraco.Web.Profiling
         {
             _startupPhase = StartupPhase.Boot;
             //create the startup profiler
-            _startupProfiler = new MiniProfiler("http://localhost/umbraco-startup", ProfileLevel.Verbose)
+            _startupProfiler = new MiniProfiler("http://localhost/umbraco-startup")
             {
                 Name = "StartupProfiler"
             };            
@@ -107,13 +107,13 @@ namespace Umbraco.Web.Profiling
         /// <summary>
         /// Executed when a profiling operation is started
         /// </summary>
-        /// <param name="level"></param>
+        /// <param name="sessionName"></param>
         /// <returns></returns>
         /// <remarks>
         /// This checks if the startup phase is not None, if this is the case and the current profiler is NULL
         /// then this sets the startup profiler to be active. Otherwise it just calls the base class Start method.
         /// </remarks>
-        public override MiniProfiler Start(ProfileLevel level)
+        public override MiniProfiler Start(string sessionName = null)
         {
             using (new ReadLock(_locker))
             {
@@ -123,7 +123,7 @@ namespace Umbraco.Web.Profiling
                     return _startupProfiler;
                 }
 
-                return base.Start(level);
+                return base.Start(sessionName);
             }
         }
 
